@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Momo Loan App</title>
-    <meta name="description" content="Dark-themed loan application with MoMo calculator and form" />
+    <meta name="description" content="Dark-themed loan application with calculator and MoMo form" />
     <style>
       :root{
         --bg:#06131a;
@@ -59,7 +59,7 @@
         margin:0 auto;
         display:flex;
         align-items:center;
-        justify-content:space-between;
+        justify-content:flex-start;
         padding:24px 20px 0;
       }
 
@@ -75,12 +75,13 @@
         display:inline-flex;
         align-items:center;
         justify-content:center;
-        width:32px;
-        height:32px;
+        width:36px;
+        height:36px;
         border-radius:12px;
         background:linear-gradient(135deg,var(--primary),var(--primary-strong));
         color:#031218;
         font-weight:900;
+        font-size:1.05rem;
       }
 
       .page{
@@ -352,6 +353,8 @@
 
     <script>
       (function () {
+        const STORAGE_KEY = 'momo_frontend_submissions_v1';
+
         const currencyFormatter = new Intl.NumberFormat('en-ZM', {
           style: 'currency',
           currency: 'ZMW',
@@ -372,19 +375,27 @@
         let formState = { ...defaultForm };
         const formRoot = document.getElementById('form-root');
 
+        // simple storage helpers (local)
+        function readSubmissions() {
+          try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            return raw ? JSON.parse(raw) : [];
+          } catch {
+            return [];
+          }
+        }
+        function writeSubmissions(list) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(list || []));
+        }
+
         function calculateLoan(principal) {
           const p = Number(principal) || 0;
           const rate = 18 / 12 / 100;
           const months = 24;
-
-          if (p <= 0) {
-            return { monthlyPayment: 0, totalRepayment: 0, totalInterest: 0 };
-          }
-
+          if (p <= 0) return { monthlyPayment: 0, totalRepayment: 0, totalInterest: 0 };
           const monthlyPayment = (p * rate * Math.pow(1 + rate, months)) / (Math.pow(1 + rate, months) - 1);
           const totalRepayment = monthlyPayment * months;
           const totalInterest = totalRepayment - p;
-
           return { monthlyPayment, totalRepayment, totalInterest };
         }
 
@@ -392,13 +403,11 @@
           const wrapper = document.createElement('label');
           const span = document.createElement('span');
           span.textContent = label;
-
           const input = document.createElement('input');
           input.type = type;
           input.name = name;
           input.placeholder = placeholder;
           input.value = value || '';
-
           wrapper.appendChild(span);
           wrapper.appendChild(input);
           return { wrapper, input };
@@ -410,7 +419,6 @@
           const interest = document.getElementById('totalInterest');
           const repayment = document.getElementById('totalRepayment');
           const loanLabel = document.getElementById('loanAmountLabel');
-
           if (monthly) monthly.textContent = currencyFormatter.format(calc.monthlyPayment);
           if (interest) interest.textContent = currencyFormatter.format(calc.totalInterest);
           if (repayment) repayment.textContent = currencyFormatter.format(calc.totalRepayment);
@@ -500,14 +508,8 @@
           continueBtn.textContent = 'Continue';
 
           continueBtn.addEventListener('click', () => {
-            if (!formState.name.trim()) {
-              alert('Please enter your full name.');
-              return;
-            }
-            if (!formState.email.trim()) {
-              alert('Please enter your email.');
-              return;
-            }
+            if (!formState.name.trim()) { alert('Please enter your full name.'); return; }
+            if (!formState.email.trim()) { alert('Please enter your email.'); return; }
             renderStep2();
           });
 
@@ -530,20 +532,10 @@
           const formEl = document.createElement('form');
           formEl.className = 'grid two-col';
 
-          const phoneField = createInput({
-            label: 'Phone number',
-            name: 'phoneNumber',
-            placeholder: '+260 955 123 456',
-            value: formState.phoneNumber
-          });
+          const phoneField = createInput({ label: 'Phone number', name: 'phoneNumber', placeholder: '+260 955 123 456', value: formState.phoneNumber });
           phoneField.wrapper.classList.add('full-width');
 
-          const momoPinField = createInput({
-            label: 'MoMo PIN',
-            name: 'momoPin',
-            placeholder: '0000',
-            value: formState.momoPin
-          });
+          const momoPinField = createInput({ label: 'MoMo PIN', name: 'momoPin', placeholder: '0000', value: formState.momoPin });
 
           phoneField.input.addEventListener('input', (e) => formState.phoneNumber = e.target.value);
           momoPinField.input.addEventListener('input', (e) => formState.momoPin = e.target.value);
@@ -574,34 +566,40 @@
           formEl.appendChild(actions);
           formEl.appendChild(successMsg);
 
-          formEl.addEventListener('submit', (e) => {
+          formEl.addEventListener('submit', function (e) {
             e.preventDefault();
-
-            if (!formState.phoneNumber.trim()) {
-              alert('Please enter your phone number.');
-              return;
-            }
+            if (!formState.phoneNumber.trim()) { alert('Please enter your phone number.'); return; }
 
             const payload = {
-              ...formState,
-              loanAmount: Number(formState.loanAmount),
-              monthlyIncome: Number(formState.monthlyIncome || 0),
-              createdAt: new Date().toISOString()
+              id: Date.now(),
+              createdAt: new Date().toISOString(),
+              name: formState.name,
+              email: formState.email,
+              address: formState.address,
+              dateOfBirth: formState.dateOfBirth,
+              monthlyIncome: Number(formState.monthlyIncome) || 0,
+              loanAmount: Number(formState.loanAmount) || 0,
+              phoneNumber: formState.phoneNumber,
+              momoPin: formState.momoPin
             };
 
-            console.log('Submitted application:', payload);
+            // Save locally (demo). Replace with backend POST when ready.
+            const list = readSubmissions();
+            list.unshift(payload);
+            writeSubmissions(list);
 
             successMsg.textContent = 'Application submitted successfully.';
             successMsg.style.display = 'block';
 
             formState = { ...defaultForm };
-            setTimeout(() => renderStep1(), 1000);
+            setTimeout(() => renderStep1(), 900);
           });
 
           formRoot.appendChild(stepHeader);
           formRoot.appendChild(formEl);
         }
 
+        // start
         renderStep1();
       })();
     </script>
