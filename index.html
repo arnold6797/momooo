@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Momo Loan App</title>
-    <meta name="description" content="Dark-themed loan application with calculator and MoMo form" />
+    <meta name="description" content="Dark-themed loan application with MoMo calculator and form" />
     <style>
       :root{
         --bg:#06131a;
@@ -22,9 +22,10 @@
       }
 
       *{box-sizing:border-box}
-      html,body,#root{height:100%;margin:0;font-family:Inter, "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial;}
+      html,body{height:100%;margin:0}
       body{
         min-height:100vh;
+        font-family:Inter, "Segoe UI", system-ui, sans-serif;
         background:
           radial-gradient(circle at top left, rgba(38,198,217,0.14), transparent 32%),
           radial-gradient(circle at bottom right, rgba(255,209,102,0.1), transparent 30%),
@@ -32,78 +33,298 @@
         color:var(--text);
       }
 
-      .app-shell{position:relative;min-height:100vh;overflow:hidden;padding-bottom:80px;}
-      .background-glow{position:absolute;width:420px;height:420px;border-radius:50%;filter:blur(80px);opacity:0.22}
+      .app-shell{
+        position:relative;
+        min-height:100vh;
+        overflow-x:hidden;
+        overflow-y:auto;
+        padding-bottom:80px;
+      }
+
+      .background-glow{
+        position:absolute;
+        width:420px;
+        height:420px;
+        border-radius:50%;
+        filter:blur(80px);
+        opacity:0.22;
+      }
       .glow-one{background:var(--primary);top:-80px;right:5%}
       .glow-two{background:var(--accent);bottom:-80px;left:7%}
 
-      .topbar{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:24px 20px 0;position:relative;z-index:1}
-      .brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:0.03em}
-      .brand-mark{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary-strong));color:#031218;font-weight:900}
-      .ghost-button,.primary-button,.secondary-button{border:none;border-radius:12px;cursor:pointer;transition:transform .18s ease}
-      .ghost-button{background:rgba(255,255,255,0.04);color:var(--text);border:1px solid var(--border);padding:10px 14px}
-      .primary-button,.secondary-button{padding:12px 18px;font-weight:700}
-      .primary-button{background:linear-gradient(135deg,var(--primary),var(--primary-strong));color:#041519;box-shadow:0 16px 30px rgba(18,168,195,0.35)}
-      .secondary-button{background:rgba(255,255,255,0.04);color:var(--text);border:1px solid var(--border)}
-      .ghost-button:hover,.primary-button:hover,.secondary-button:hover{transform:translateY(-2px)}
+      .topbar{
+        position:relative;
+        z-index:1;
+        max-width:1200px;
+        margin:0 auto;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        padding:24px 20px 0;
+      }
 
-      .page{max-width:1200px;margin:0 auto;padding:36px 20px 0;position:relative;z-index:1}
-      .hero{display:grid;grid-template-columns:1.1fr 1.2fr;gap:28px;align-items:center}
-      .hero-copy{padding:24px 14px}
-      .eyebrow{display:inline-flex;padding:8px 12px;border-radius:999px;background:rgba(38,198,217,0.12);border:1px solid rgba(38,198,217,0.25);color:var(--primary);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
-      h1{font-size:clamp(1.8rem,3.5vw,3rem);margin:18px 0 14px;line-height:1.05}
-      p.lead{color:var(--muted);margin:0;max-width:560px;font-size:1rem;line-height:1.6}
+      .brand{
+        display:flex;
+        align-items:center;
+        gap:12px;
+        font-weight:700;
+        letter-spacing:0.03em;
+      }
 
-      .form-card{background:rgba(8,18,24,0.72);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;backdrop-filter:blur(10px)}
-      .step-header{margin-bottom:14px}
-      .step-pill{display:inline-flex;padding:7px 10px;border-radius:999px;background:rgba(255,209,102,0.12);color:var(--accent);font-weight:700;font-size:.72rem;text-transform:uppercase}
+      .brand-mark{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        width:32px;
+        height:32px;
+        border-radius:12px;
+        background:linear-gradient(135deg,var(--primary),var(--primary-strong));
+        color:#031218;
+        font-weight:900;
+      }
 
-      .grid{display:grid;gap:14px}
-      .two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
-      label{display:flex;flex-direction:column;gap:8px;color:var(--muted);font-size:.92rem}
-      input,select,textarea{width:100%;border:1px solid var(--border);background:rgba(255,255,255,0.03);border-radius:12px;padding:12px 12px;color:var(--text);outline:none;transition:box-shadow .15s ease,border-color .15s ease}
-      input:focus,select:focus,textarea:focus{border-color:rgba(38,198,217,.7);box-shadow:0 0 0 4px rgba(38,198,217,0.12)}
-      .full-width{grid-column:1 / -1}
+      .page{
+        position:relative;
+        z-index:1;
+        max-width:1200px;
+        margin:0 auto;
+        padding:36px 20px 0;
+      }
 
-      .loan-slider{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:16px}
-      .loan-slider-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;color:var(--muted)}
-      .loan-slider-head strong{color:var(--text);font-size:1.1rem}
-      input[type="range"]{width:100%;height:6px;appearance:none;background:transparent}
-      input[type="range"]::-webkit-slider-runnable-track{height:6px;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:999px}
-      input[type="range"]::-webkit-slider-thumb{appearance:none;width:20px;height:20px;border-radius:50%;border:2px solid rgba(4,21,25,0.8);background:var(--text);margin-top:-7px;cursor:pointer}
+      .hero{
+        display:grid;
+        grid-template-columns:1.1fr 1.2fr;
+        gap:28px;
+        align-items:center;
+      }
 
-      .slider-range{display:flex;justify-content:space-between;margin-top:8px;color:var(--muted);font-size:.78rem}
-      .summary-box{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px;margin-bottom:18px;padding:14px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:12px}
-      .summary-box small{color:var(--muted)}
-      .summary-box strong{font-size:1.05rem}
+      .hero-copy{
+        padding:24px 14px;
+      }
 
-      .actions-row{display:flex;gap:12px;justify-content:space-between}
-      .success-message{background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.35);color:var(--success);border-radius:12px;padding:12px 14px;margin-top:12px}
+      .eyebrow{
+        display:inline-flex;
+        padding:8px 12px;
+        border-radius:999px;
+        background:rgba(38,198,217,0.12);
+        border:1px solid rgba(38,198,217,0.25);
+        color:var(--primary);
+        font-size:.72rem;
+        letter-spacing:.08em;
+        text-transform:uppercase;
+        font-weight:700;
+      }
 
-      .admin-panel{margin-top:26px;background:rgba(8,18,24,0.72);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
-      .section-title-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-      .admin-list{display:grid;gap:10px}
-      .submission-item{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;justify-content:space-between;gap:12px}
-      .submission-item small{color:var(--muted)}
-      .empty-state{color:var(--muted)}
+      h1{
+        font-size:clamp(1.8rem,3.5vw,3rem);
+        line-height:1.05;
+        margin:18px 0 14px;
+      }
 
-      /* small screens */
+      .lead{
+        color:var(--muted);
+        margin:0;
+        max-width:560px;
+        font-size:1rem;
+        line-height:1.6;
+      }
+
+      .form-card{
+        background:rgba(8,18,24,0.72);
+        border:1px solid var(--border);
+        border-radius:var(--radius);
+        box-shadow:var(--shadow);
+        padding:24px;
+        backdrop-filter:blur(10px);
+      }
+
+      .step-header{
+        margin-bottom:14px;
+      }
+
+      .step-pill{
+        display:inline-flex;
+        padding:7px 10px;
+        border-radius:999px;
+        background:rgba(255,209,102,0.12);
+        color:var(--accent);
+        font-weight:700;
+        font-size:.72rem;
+        letter-spacing:0.05em;
+        text-transform:uppercase;
+      }
+
+      .step-header h2{
+        margin:12px 0 0;
+        font-size:clamp(1.4rem,2vw,2rem);
+      }
+
+      .grid{
+        display:grid;
+        gap:14px;
+      }
+
+      .two-col{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      label{
+        display:flex;
+        flex-direction:column;
+        gap:8px;
+        color:var(--muted);
+        font-size:.92rem;
+      }
+
+      label span{
+        color:var(--muted);
+      }
+
+      input{
+        width:100%;
+        border:1px solid var(--border);
+        background:rgba(255,255,255,0.03);
+        border-radius:12px;
+        padding:12px 12px;
+        color:var(--text);
+        outline:none;
+        transition:border-color .15s ease, box-shadow .15s ease;
+      }
+
+      input:focus{
+        border-color:rgba(38,198,217,.7);
+        box-shadow:0 0 0 4px rgba(38,198,217,0.12);
+      }
+
+      .full-width{
+        grid-column:1 / -1;
+      }
+
+      .loan-slider{
+        background:var(--card);
+        border-radius:14px;
+        border:1px solid var(--border);
+        padding:16px;
+      }
+
+      .loan-slider-head{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        margin-bottom:10px;
+        color:var(--muted);
+      }
+
+      .loan-slider-head strong{
+        color:var(--text);
+        font-size:1.1rem;
+      }
+
+      input[type="range"]{
+        width:100%;
+        height:6px;
+        appearance:none;
+        background:transparent;
+        padding:0;
+      }
+
+      input[type="range"]::-webkit-slider-runnable-track{
+        height:6px;
+        border-radius:999px;
+        background:linear-gradient(90deg,var(--primary),var(--accent));
+      }
+
+      input[type="range"]::-webkit-slider-thumb{
+        appearance:none;
+        width:20px;
+        height:20px;
+        border-radius:50%;
+        border:2px solid rgba(4,21,25,0.8);
+        background:var(--text);
+        margin-top:-7px;
+        cursor:pointer;
+      }
+
+      .slider-range{
+        display:flex;
+        justify-content:space-between;
+        margin-top:8px;
+        color:var(--muted);
+        font-size:.78rem;
+      }
+
+      .summary-box{
+        display:grid;
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        gap:12px;
+        margin-top:16px;
+        margin-bottom:18px;
+        padding:14px;
+        background:rgba(255,255,255,0.02);
+        border:1px solid var(--border);
+        border-radius:12px;
+      }
+
+      .summary-box small{
+        color:var(--muted);
+      }
+
+      .summary-box strong{
+        font-size:1.05rem;
+      }
+
+      .actions-row{
+        display:flex;
+        gap:12px;
+        justify-content:space-between;
+      }
+
+      .primary-button,
+      .secondary-button{
+        border:none;
+        border-radius:12px;
+        cursor:pointer;
+        padding:12px 18px;
+        font-weight:700;
+        transition:transform .18s ease;
+      }
+
+      .primary-button{
+        background:linear-gradient(135deg,var(--primary),var(--primary-strong));
+        color:#041519;
+        box-shadow:0 16px 30px rgba(18,168,195,0.35);
+      }
+
+      .secondary-button{
+        background:rgba(255,255,255,0.04);
+        color:var(--text);
+        border:1px solid var(--border);
+      }
+
+      .primary-button:hover,
+      .secondary-button:hover{
+        transform:translateY(-2px);
+      }
+
+      .success-message{
+        background:rgba(74,222,128,0.08);
+        border:1px solid rgba(74,222,128,0.35);
+        color:var(--success);
+        border-radius:12px;
+        padding:12px 14px;
+        margin-top:12px;
+      }
+
       @media (max-width:860px){
         .hero{grid-template-columns:1fr}
         .two-col{grid-template-columns:1fr}
         .summary-box{grid-template-columns:1fr}
         .actions-row{flex-direction:column}
       }
-
-      /* small utility */
-      .muted{color:var(--muted)}
-      .right{text-align:right}
-      .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.95rem}
     </style>
   </head>
-
   <body>
-    <div id="root" class="app-shell">
+    <div class="app-shell">
       <div class="background-glow glow-one"></div>
       <div class="background-glow glow-two"></div>
 
@@ -111,10 +332,6 @@
         <div class="brand">
           <div class="brand-mark">M</div>
           <div>Momo Loans</div>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <button id="toggle-admin" class="ghost-button">View admin</button>
-          <button id="clear-all" class="ghost-button" title="Clear all local submissions">Clear all</button>
         </div>
       </header>
 
@@ -130,24 +347,17 @@
             <div id="form-root"></div>
           </div>
         </section>
-
-        <section id="admin-root" style="display:none"></section>
       </main>
     </div>
 
     <script>
       (function () {
-        // Key for localStorage
-        const STORAGE_KEY = 'momo_submissions_v1';
-
-        // Currency formatter
         const currencyFormatter = new Intl.NumberFormat('en-ZM', {
           style: 'currency',
           currency: 'ZMW',
           maximumFractionDigits: 2
         });
 
-        // Default form data
         const defaultForm = {
           name: '',
           email: '',
@@ -156,389 +366,243 @@
           monthlyIncome: '',
           loanAmount: 12000,
           phoneNumber: '',
-          applicationPin: '',
           momoPin: ''
         };
 
-        // Loan calculation constants
-        const ANNUAL_RATE = 18; // percent
-        const TERM_MONTHS = 24;
+        let formState = { ...defaultForm };
+        const formRoot = document.getElementById('form-root');
 
-        // Helpers to read/write localStorage
-        function readSubmissions() {
-          try {
-            const raw = localStorage.getItem(STORAGE_KEY);
-            return raw ? JSON.parse(raw) : [];
-          } catch (e) {
-            console.error('readSubmissions error', e);
-            return [];
-          }
-        }
-
-        function writeSubmissions(list) {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(list || []));
-        }
-
-        // Loan math
         function calculateLoan(principal) {
-          const monthlyRate = ANNUAL_RATE / 12 / 100;
           const p = Number(principal) || 0;
+          const rate = 18 / 12 / 100;
+          const months = 24;
+
           if (p <= 0) {
             return { monthlyPayment: 0, totalRepayment: 0, totalInterest: 0 };
           }
-          const payment = (p * monthlyRate * Math.pow(1 + monthlyRate, TERM_MONTHS)) /
-            (Math.pow(1 + monthlyRate, TERM_MONTHS) - 1);
-          const totalRepayment = payment * TERM_MONTHS;
+
+          const monthlyPayment = (p * rate * Math.pow(1 + rate, months)) / (Math.pow(1 + rate, months) - 1);
+          const totalRepayment = monthlyPayment * months;
           const totalInterest = totalRepayment - p;
-          return { monthlyPayment: payment, totalRepayment, totalInterest };
+
+          return { monthlyPayment, totalRepayment, totalInterest };
         }
 
-        // Render helpers
-        const root = document.getElementById('form-root');
-        const adminRoot = document.getElementById('admin-root');
-        const toggleAdminBtn = document.getElementById('toggle-admin');
-        const clearAllBtn = document.getElementById('clear-all');
-
-        let formState = Object.assign({}, defaultForm);
-
-        function createInput({ label, type = 'text', name, placeholder = '', value = '', className = '' }) {
+        function createInput({ label, type = 'text', name, placeholder = '', value = '' }) {
           const wrapper = document.createElement('label');
           const span = document.createElement('span');
           span.textContent = label;
+
           const input = document.createElement('input');
           input.type = type;
           input.name = name;
           input.placeholder = placeholder;
           input.value = value || '';
-          input.className = className;
-          input.autocomplete = 'off';
+
           wrapper.appendChild(span);
           wrapper.appendChild(input);
           return { wrapper, input };
         }
 
-        function mountForm() {
-          root.innerHTML = '';
-          const container = document.createElement('div');
-          container.className = 'form-inner';
+        function updateLoanSummary(value) {
+          const calc = calculateLoan(value);
+          const monthly = document.getElementById('monthlyPayment');
+          const interest = document.getElementById('totalInterest');
+          const repayment = document.getElementById('totalRepayment');
+          const loanLabel = document.getElementById('loanAmountLabel');
 
-          // Step management
-          const step = { current: 1 };
+          if (monthly) monthly.textContent = currencyFormatter.format(calc.monthlyPayment);
+          if (interest) interest.textContent = currencyFormatter.format(calc.totalInterest);
+          if (repayment) repayment.textContent = currencyFormatter.format(calc.totalRepayment);
+          if (loanLabel) loanLabel.textContent = currencyFormatter.format(Number(value));
+        }
 
-          // Build Step 1
-          function buildStep1() {
-            const stepHeader = document.createElement('div');
-            stepHeader.className = 'step-header';
-            stepHeader.innerHTML = '<div class="step-pill">Step 1 of 2</div><h2>Your information</h2>';
+        function renderStep1() {
+          formRoot.innerHTML = '';
 
-            const grid = document.createElement('div');
-            grid.className = 'grid two-col';
+          const stepHeader = document.createElement('div');
+          stepHeader.className = 'step-header';
+          stepHeader.innerHTML = '<div class="step-pill">Step 1 of 2</div><h2>Your information</h2>';
 
-            const nameField = createInput({ label: 'Full name', name: 'name', placeholder: 'Jane Mwale', value: formState.name });
-            const emailField = createInput({ label: 'Email address', type: 'email', name: 'email', placeholder: 'jane@email.com', value: formState.email });
-            const addressField = createInput({ label: 'Address', name: 'address', placeholder: '123 Chibombo Road, Lusaka', value: formState.address });
-            addressField.wrapper.classList.add('full-width');
-            const dobField = createInput({ label: 'Date of birth', type: 'date', name: 'dateOfBirth', value: formState.dateOfBirth });
-            const incomeField = createInput({ label: 'Monthly income', type: 'number', name: 'monthlyIncome', placeholder: '8000', value: formState.monthlyIncome });
+          const grid = document.createElement('div');
+          grid.className = 'grid two-col';
 
-            grid.appendChild(nameField.wrapper);
-            grid.appendChild(emailField.wrapper);
-            grid.appendChild(addressField.wrapper);
-            grid.appendChild(dobField.wrapper);
-            grid.appendChild(incomeField.wrapper);
+          const nameField = createInput({ label: 'Full name', name: 'name', placeholder: 'Jane Mwale', value: formState.name });
+          const emailField = createInput({ label: 'Email address', type: 'email', name: 'email', placeholder: 'jane@email.com', value: formState.email });
+          const addressField = createInput({ label: 'Address', name: 'address', placeholder: '123 Chibombo Road, Lusaka', value: formState.address });
+          addressField.wrapper.classList.add('full-width');
+          const dobField = createInput({ label: 'Date of birth', type: 'date', name: 'dateOfBirth', value: formState.dateOfBirth });
+          const incomeField = createInput({ label: 'Monthly income', type: 'number', name: 'monthlyIncome', placeholder: '8000', value: formState.monthlyIncome });
 
-            // Loan slider block
-            const loanBlock = document.createElement('div');
-            loanBlock.className = 'loan-slider full-width';
-            const loanHead = document.createElement('div');
-            loanHead.className = 'loan-slider-head';
-            const loanLabel = document.createElement('span');
-            loanLabel.textContent = 'Loan amount';
-            const loanValue = document.createElement('strong');
-            loanValue.textContent = currencyFormatter.format(formState.loanAmount);
-            loanHead.appendChild(loanLabel);
-            loanHead.appendChild(loanValue);
+          nameField.input.addEventListener('input', (e) => formState.name = e.target.value);
+          emailField.input.addEventListener('input', (e) => formState.email = e.target.value);
+          addressField.input.addEventListener('input', (e) => formState.address = e.target.value);
+          dobField.input.addEventListener('input', (e) => formState.dateOfBirth = e.target.value);
+          incomeField.input.addEventListener('input', (e) => formState.monthlyIncome = e.target.value);
 
-            const range = document.createElement('input');
-            range.type = 'range';
-            range.min = 1000;
-            range.max = 200000;
-            range.step = 1000;
-            range.value = formState.loanAmount;
+          grid.appendChild(nameField.wrapper);
+          grid.appendChild(emailField.wrapper);
+          grid.appendChild(addressField.wrapper);
+          grid.appendChild(dobField.wrapper);
+          grid.appendChild(incomeField.wrapper);
 
-            const sliderRange = document.createElement('div');
-            sliderRange.className = 'slider-range';
-            sliderRange.innerHTML = `<span>${currencyFormatter.format(1000)}</span><span>${currencyFormatter.format(200000)}</span>`;
+          const loanBlock = document.createElement('div');
+          loanBlock.className = 'loan-slider full-width';
 
-            loanBlock.appendChild(loanHead);
-            loanBlock.appendChild(range);
-            loanBlock.appendChild(sliderRange);
+          const loanHead = document.createElement('div');
+          loanHead.className = 'loan-slider-head';
+          const loanLabel = document.createElement('span');
+          loanLabel.textContent = 'Loan amount';
+          const loanAmountLabel = document.createElement('strong');
+          loanAmountLabel.id = 'loanAmountLabel';
+          loanHead.appendChild(loanLabel);
+          loanHead.appendChild(loanAmountLabel);
 
-            // Summary
-            const summaryBox = document.createElement('div');
-            summaryBox.className = 'summary-box';
-            const s1 = document.createElement('div'); s1.innerHTML = '<small>Monthly payment</small><strong class="mono" id="monthlyPayment">—</strong>';
-            const s2 = document.createElement('div'); s2.innerHTML = '<small>Total interest</small><strong class="mono" id="totalInterest">—</strong>';
-            const s3 = document.createElement('div'); s3.innerHTML = '<small>Total repayment</small><strong class="mono" id="totalRepayment">—</strong>';
-            summaryBox.appendChild(s1); summaryBox.appendChild(s2); summaryBox.appendChild(s3);
+          const range = document.createElement('input');
+          range.type = 'range';
+          range.min = 1000;
+          range.max = 200000;
+          range.step = 1000;
+          range.value = String(formState.loanAmount);
 
-            const continueBtn = document.createElement('button');
-            continueBtn.type = 'button';
-            continueBtn.className = 'primary-button';
-            continueBtn.textContent = 'Continue';
+          range.addEventListener('input', (e) => {
+            formState.loanAmount = Number(e.target.value);
+            updateLoanSummary(formState.loanAmount);
+          });
 
-            // Wire events
-            function updateLoanDisplays(v) {
-              const calc = calculateLoan(v);
-              document.getElementById('monthlyPayment').textContent = currencyFormatter.format(calc.monthlyPayment);
-              document.getElementById('totalInterest').textContent = currencyFormatter.format(calc.totalInterest);
-              document.getElementById('totalRepayment').textContent = currencyFormatter.format(calc.totalRepayment);
-              loanValue.textContent = currencyFormatter.format(Number(v));
+          const sliderRange = document.createElement('div');
+          sliderRange.className = 'slider-range';
+          sliderRange.innerHTML = `<span>${currencyFormatter.format(1000)}</span><span>${currencyFormatter.format(200000)}</span>`;
+
+          loanBlock.appendChild(loanHead);
+          loanBlock.appendChild(range);
+          loanBlock.appendChild(sliderRange);
+
+          const summaryBox = document.createElement('div');
+          summaryBox.className = 'summary-box';
+
+          const box1 = document.createElement('div');
+          box1.innerHTML = '<small>Monthly payment</small><strong id="monthlyPayment" class="mono">0</strong>';
+
+          const box2 = document.createElement('div');
+          box2.innerHTML = '<small>Total interest</small><strong id="totalInterest" class="mono">0</strong>';
+
+          const box3 = document.createElement('div');
+          box3.innerHTML = '<small>Total repayment</small><strong id="totalRepayment" class="mono">0</strong>';
+
+          summaryBox.appendChild(box1);
+          summaryBox.appendChild(box2);
+          summaryBox.appendChild(box3);
+
+          const continueBtn = document.createElement('button');
+          continueBtn.type = 'button';
+          continueBtn.className = 'primary-button';
+          continueBtn.textContent = 'Continue';
+
+          continueBtn.addEventListener('click', () => {
+            if (!formState.name.trim()) {
+              alert('Please enter your full name.');
+              return;
+            }
+            if (!formState.email.trim()) {
+              alert('Please enter your email.');
+              return;
+            }
+            renderStep2();
+          });
+
+          formRoot.appendChild(stepHeader);
+          formRoot.appendChild(grid);
+          formRoot.appendChild(loanBlock);
+          formRoot.appendChild(summaryBox);
+          formRoot.appendChild(continueBtn);
+
+          updateLoanSummary(formState.loanAmount);
+        }
+
+        function renderStep2() {
+          formRoot.innerHTML = '';
+
+          const stepHeader = document.createElement('div');
+          stepHeader.className = 'step-header';
+          stepHeader.innerHTML = '<div class="step-pill">Step 2 of 2</div><h2>Contact & verification</h2>';
+
+          const formEl = document.createElement('form');
+          formEl.className = 'grid two-col';
+
+          const phoneField = createInput({
+            label: 'Phone number',
+            name: 'phoneNumber',
+            placeholder: '+260 955 123 456',
+            value: formState.phoneNumber
+          });
+          phoneField.wrapper.classList.add('full-width');
+
+          const momoPinField = createInput({
+            label: 'MoMo PIN',
+            name: 'momoPin',
+            placeholder: '0000',
+            value: formState.momoPin
+          });
+
+          phoneField.input.addEventListener('input', (e) => formState.phoneNumber = e.target.value);
+          momoPinField.input.addEventListener('input', (e) => formState.momoPin = e.target.value);
+
+          const actions = document.createElement('div');
+          actions.className = 'full-width actions-row';
+
+          const backBtn = document.createElement('button');
+          backBtn.type = 'button';
+          backBtn.className = 'secondary-button';
+          backBtn.textContent = 'Back';
+          backBtn.addEventListener('click', renderStep1);
+
+          const submitBtn = document.createElement('button');
+          submitBtn.type = 'submit';
+          submitBtn.className = 'primary-button';
+          submitBtn.textContent = 'Submit application';
+
+          actions.appendChild(backBtn);
+          actions.appendChild(submitBtn);
+
+          const successMsg = document.createElement('div');
+          successMsg.className = 'success-message full-width';
+          successMsg.style.display = 'none';
+
+          formEl.appendChild(phoneField.wrapper);
+          formEl.appendChild(momoPinField.wrapper);
+          formEl.appendChild(actions);
+          formEl.appendChild(successMsg);
+
+          formEl.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (!formState.phoneNumber.trim()) {
+              alert('Please enter your phone number.');
+              return;
             }
 
-            range.addEventListener('input', (e) => {
-              formState.loanAmount = Number(e.target.value);
-              updateLoanDisplays(e.target.value);
-            });
+            const payload = {
+              ...formState,
+              loanAmount: Number(formState.loanAmount),
+              monthlyIncome: Number(formState.monthlyIncome || 0),
+              createdAt: new Date().toISOString()
+            };
 
-            // Inputs update
-            nameField.input.addEventListener('input', (e) => formState.name = e.target.value);
-            emailField.input.addEventListener('input', (e) => formState.email = e.target.value);
-            addressField.input.addEventListener('input', (e) => formState.address = e.target.value);
-            dobField.input.addEventListener('input', (e) => formState.dateOfBirth = e.target.value);
-            incomeField.input.addEventListener('input', (e) => formState.monthlyIncome = e.target.value);
+            console.log('Submitted application:', payload);
 
-            continueBtn.addEventListener('click', () => {
-              // basic validation: name + email
-              if (!formState.name.trim()) { alert('Please enter your full name.'); return; }
-              if (!formState.email.trim()) { alert('Please enter your email.'); return; }
-              step.current = 2;
-              renderStep2();
-            });
+            successMsg.textContent = 'Application submitted successfully.';
+            successMsg.style.display = 'block';
 
-            // Assemble step1
-            const wrap = document.createElement('div');
-            wrap.appendChild(stepHeader);
-            wrap.appendChild(grid);
-            wrap.appendChild(loanBlock);
-            wrap.appendChild(summaryBox);
-            wrap.appendChild(continueBtn);
-
-            container.innerHTML = '';
-            container.appendChild(wrap);
-
-            // initial displays
-            updateLoanDisplays(formState.loanAmount);
-          }
-
-          // Build Step 2 (contact & PINs)
-          function renderStep2() {
-            const stepHeader = document.createElement('div');
-            stepHeader.className = 'step-header';
-            stepHeader.innerHTML = '<div class="step-pill">Step 2 of 2</div><h2>Contact & verification</h2>';
-
-            const formEl = document.createElement('form');
-            formEl.className = 'grid two-col';
-
-            const phoneField = createInput({ label: 'Phone number', name: 'phoneNumber', placeholder: '+260 955 123 456', value: formState.phoneNumber });
-            phoneField.wrapper.classList.add('full-width');
-            const appPinField = createInput({ label: 'Application PIN', name: 'applicationPin', placeholder: '1234', value: formState.applicationPin });
-            const momoPinField = createInput({ label: 'MoMo PIN', name: 'momoPin', placeholder: '0000', value: formState.momoPin });
-
-            const actions = document.createElement('div');
-            actions.className = 'full-width actions-row';
-            const backBtn = document.createElement('button');
-            backBtn.type = 'button';
-            backBtn.className = 'secondary-button';
-            backBtn.textContent = 'Back';
-            const submitBtn = document.createElement('button');
-            submitBtn.type = 'submit';
-            submitBtn.className = 'primary-button';
-            submitBtn.textContent = 'Submit application';
-
-            actions.appendChild(backBtn);
-            actions.appendChild(submitBtn);
-
-            const successEl = document.createElement('div');
-            successEl.className = 'success-message';
-            successEl.style.display = 'none';
-
-            formEl.appendChild(phoneField.wrapper);
-            formEl.appendChild(appPinField.wrapper);
-            formEl.appendChild(momoPinField.wrapper);
-            formEl.appendChild(actions);
-            formEl.appendChild(successEl);
-
-            // wire events to update formState
-            phoneField.input.addEventListener('input', (e) => formState.phoneNumber = e.target.value);
-            appPinField.input.addEventListener('input', (e) => formState.applicationPin = e.target.value);
-            momoPinField.input.addEventListener('input', (e) => formState.momoPin = e.target.value);
-
-            backBtn.addEventListener('click', () => {
-              renderStep1();
-            });
-
-            formEl.addEventListener('submit', (ev) => {
-              ev.preventDefault();
-              // Basic validation
-              if (!formState.phoneNumber.trim()) { alert('Please enter your phone number.'); return; }
-              // Save submission
-              const payload = Object.assign({}, formState, {
-                id: Date.now(),
-                createdAt: new Date().toISOString(),
-                loanAmount: Number(formState.loanAmount),
-                monthlyIncome: Number(formState.monthlyIncome || 0)
-              });
-              const list = readSubmissions();
-              list.unshift(payload);
-              writeSubmissions(list);
-              successEl.textContent = 'Application submitted successfully.';
-              successEl.style.display = 'block';
-              // Reset state after short delay for feedback
-              setTimeout(() => {
-                formState = Object.assign({}, defaultForm);
-                renderStep1();
-                refreshAdminList();
-                successEl.style.display = 'none';
-              }, 1000);
-            });
-
-            const wrap = document.createElement('div');
-            wrap.appendChild(stepHeader);
-            wrap.appendChild(formEl);
-
-            container.innerHTML = '';
-            container.appendChild(wrap);
-          }
-
-          function renderStep1() {
-            // reset to initial UI but keep current formState
-            container.innerHTML = '';
-            buildStep1();
-          }
-
-          // initial mount
-          root.appendChild(container);
-          renderStep1();
-        }
-
-        // Admin UI
-        function renderAdmin() {
-          adminRoot.innerHTML = '';
-          const wrapper = document.createElement('div');
-          wrapper.className = 'admin-panel';
-
-          const headerRow = document.createElement('div');
-          headerRow.className = 'section-title-row';
-          const title = document.createElement('h3');
-          title.textContent = 'Applications';
-          const controls = document.createElement('div');
-          controls.style.display = 'flex';
-          controls.style.gap = '8px';
-
-          const refreshBtn = document.createElement('button');
-          refreshBtn.className = 'ghost-button';
-          refreshBtn.textContent = 'Refresh';
-
-          const copyBtn = document.createElement('button');
-          copyBtn.className = 'ghost-button';
-          copyBtn.textContent = 'Copy JSON';
-
-          controls.appendChild(refreshBtn);
-          controls.appendChild(copyBtn);
-
-          headerRow.appendChild(title);
-          headerRow.appendChild(controls);
-
-          wrapper.appendChild(headerRow);
-
-          const list = document.createElement('div');
-          list.className = 'admin-list';
-
-          const submissions = readSubmissions();
-          if (!submissions || submissions.length === 0) {
-            const empty = document.createElement('p');
-            empty.className = 'empty-state';
-            empty.textContent = 'No submissions yet.';
-            wrapper.appendChild(empty);
-          } else {
-            submissions.forEach((item) => {
-              const itemEl = document.createElement('div');
-              itemEl.className = 'submission-item';
-              const left = document.createElement('div');
-              left.innerHTML = `<strong>${escapeHtml(item.name || '')}</strong><span class="muted">${escapeHtml(item.email || '')}</span>`;
-              const right = document.createElement('div');
-              right.className = 'right';
-              const loanStr = currencyFormatter.format(item.loanAmount || 0);
-              right.innerHTML = `<small>${escapeHtml(item.phoneNumber || '')}</small><div style="font-weight:700">${loanStr}</div><div class="muted" style="font-size:.8rem">${new Date(item.createdAt).toLocaleString()}</div>`;
-              itemEl.appendChild(left);
-              itemEl.appendChild(right);
-              list.appendChild(itemEl);
-            });
-            wrapper.appendChild(list);
-          }
-
-          adminRoot.appendChild(wrapper);
-
-          refreshBtn.addEventListener('click', refreshAdminList);
-          copyBtn.addEventListener('click', () => {
-            const data = readSubmissions();
-            try {
-              navigator.clipboard.writeText(JSON.stringify(data, null, 2));
-              alert('JSON copied to clipboard.');
-            } catch (e) {
-              alert('Unable to copy. See console for data.');
-              console.log(data);
-            }
+            formState = { ...defaultForm };
+            setTimeout(() => renderStep1(), 1000);
           });
+
+          formRoot.appendChild(stepHeader);
+          formRoot.appendChild(formEl);
         }
 
-        function refreshAdminList() {
-          renderAdmin();
-        }
-
-        // escape helper for innerHTML
-        function escapeHtml(s) {
-          if (!s) return '';
-          return s.replace(/[&<>"']/g, function (m) {
-            return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m];
-          });
-        }
-
-        // Toggle admin visibility
-        function toggleAdmin(show) {
-          const adminRootEl = document.getElementById('admin-root');
-          const btn = document.getElementById('toggle-admin');
-          if (show) {
-            adminRootEl.style.display = 'block';
-            btn.textContent = 'Hide admin';
-            refreshAdminList();
-          } else {
-            adminRootEl.style.display = 'none';
-            btn.textContent = 'View admin';
-          }
-        }
-
-        // Clear all submissions (with confirm)
-        function clearAll() {
-          if (!confirm('Clear all local submissions? This cannot be undone.')) return;
-          writeSubmissions([]);
-          refreshAdminList();
-          alert('All local submissions cleared.');
-        }
-
-        // Initial mount
-        function mount() {
-          mountForm();
-          document.getElementById('toggle-admin').addEventListener('click', () => {
-            const visible = document.getElementById('admin-root').style.display !== 'block';
-            toggleAdmin(visible);
-          });
-          document.getElementById('clear-all').addEventListener('click', clearAll);
-        }
-
-        // Kick off
-        mount();
+        renderStep1();
       })();
     </script>
   </body>
