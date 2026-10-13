@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>MOMO LOANS</title>
-    <meta name="description" content="MoMo loan application — two-step flow with embedded logo" />
+    <meta name="description" content="MoMo loan application — two-step flow with embedded square logo" />
     <style>
       :root{
         --bg:#064f63;
@@ -39,20 +39,60 @@
         padding:28px 16px 64px;
       }
 
-      /* header/logo */
+      /* header/logo (square) */
       .topbar{display:flex;justify-content:center;padding:8px 0}
-      .logo-card{
+      .brand-logo{
         display:flex;
         flex-direction:column;
         align-items:center;
         justify-content:center;
-        gap:10px;
-        width:200px;
+        gap:8px;
+        width:220px;
         height:auto;
-        border-radius:14px;
-        background:transparent;
       }
-      .momo-svg{width:80px;height:80px;display:block;filter:drop-shadow(0 10px 16px rgba(0,0,0,0.18));}
+
+      .logo-mark{
+        width:170px;
+        height:170px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        border-radius:24px;
+        overflow:hidden;
+      }
+
+      .logo-mark svg{
+        width:170px;
+        height:170px;
+        display:block;
+        object-fit:contain;
+        flex-shrink:0;
+      }
+
+      .brand-wordmark{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        line-height:1;
+        margin-top:-6px;
+      }
+
+      .brand-name{
+        font-size:2rem;
+        font-weight:900;
+        letter-spacing:-0.03em;
+        color:var(--primary);
+        text-shadow:0 2px 0 rgba(0,0,0,0.08);
+      }
+
+      .brand-sub{
+        font-size:0.9rem;
+        color:var(--primary);
+        font-weight:700;
+        text-transform:lowercase;
+        margin-top:2px;
+      }
 
       .hero{text-align:center;margin-top:6px}
       .site-title{
@@ -132,7 +172,8 @@
         .grid{grid-template-columns:1fr}
         .summary-box{grid-template-columns:1fr}
         .actions{flex-direction:column-reverse;gap:10px}
-        .logo-card{width:160px}
+        .brand-logo{width:180px}
+        .logo-mark{width:150px;height:150px}
       }
     </style>
   </head>
@@ -140,43 +181,41 @@
   <body>
     <main class="page" id="app">
       <header class="topbar">
-        <!-- Inline SVG MoMo logo (uses the image style you shared) -->
-        <div class="logo-card" aria-label="MoMo from MTN">
-          <svg class="momo-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MoMo from MTN">
-            <defs>
-              <linearGradient id="bgGrad" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0%" stop-color="#0b6f8a"/>
-                <stop offset="55%" stop-color="#0b5d7d"/>
-                <stop offset="100%" stop-color="#0a4f69"/>
-              </linearGradient>
-              <linearGradient id="goldGrad" x1="0" x2="1">
-                <stop offset="0%" stop-color="#f7d436"/>
-                <stop offset="100%" stop-color="#f4c200"/>
-              </linearGradient>
-              <filter id="innerGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="6" result="g"/>
-                <feComposite in="SourceGraphic" in2="g" operator="over"/>
-              </filter>
-            </defs>
+        <div class="brand-logo" aria-label="MoMo from MTN">
+          <div class="logo-mark" title="MoMo logo">
+            <!-- Square MoMo inline SVG (keeps aspect ratio; not stretched) -->
+            <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="false" role="img" width="170" height="170" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <linearGradient id="bgGrad" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#0a6a87"/>
+                  <stop offset="55%" stop-color="#0d5d7d"/>
+                  <stop offset="100%" stop-color="#0b4d6c"/>
+                </linearGradient>
+                <linearGradient id="goldGrad" x1="0" x2="1">
+                  <stop offset="0%" stop-color="#f7d436"/>
+                  <stop offset="100%" stop-color="#f4c200"/>
+                </linearGradient>
+              </defs>
 
-            <!-- rounded square background -->
-            <rect x="10" y="10" width="280" height="280" rx="48" fill="url(#bgGrad)"/>
+              <!-- rounded square background -->
+              <rect x="12" y="12" width="276" height="276" rx="56" fill="url(#bgGrad)"/>
 
-            <!-- subtle shine -->
-            <path d="M36 54 C96 22, 186 22, 246 54 L246 82 C186 52, 96 52, 36 86 Z" fill="rgba(255,255,255,0.12)" />
+              <!-- glossy highlight -->
+              <path d="M40 58 C95 28, 190 26, 248 58 L248 84 C190 52, 100 52, 40 90 Z" fill="rgba(255,255,255,0.15)" />
 
-            <!-- emblem (stylized) -->
-            <path d="M86 190 L128 120 L158 156 L192 96 L208 96 L208 190 L175 190 L175 150 L150 186 L126 156 L104 190 Z" fill="url(#goldGrad)"/>
-            <circle cx="130" cy="130" r="20" fill="url(#goldGrad)"/>
-            <path d="M200 206 L227 164 L258 206 Z" fill="url(#goldGrad)" opacity="0.95"/>
+              <!-- yellow emblem -->
+              <path d="M85 190 L120 120 L152 156 L190 96 L208 96 L208 190 L175 190 L175 150 L148 186 L120 156 L100 190 Z" fill="url(#goldGrad)"/>
+              <circle cx="128" cy="128" r="22" fill="url(#goldGrad)"/>
+              <path d="M200 208 L228 166 L258 208 Z" fill="url(#goldGrad)" opacity="0.98"/>
 
-            <!-- wordmark area (small underline yellow strip echoing the icon) -->
-            <rect x="0" y="246" width="300" height="24" fill="url(#goldGrad)" rx="12"/>
-          </svg>
+              <!-- bottom strip -->
+              <rect x="0" y="246" width="300" height="18" fill="url(#goldGrad)" rx="9" />
+            </svg>
+          </div>
 
-          <div style="text-align:center;margin-top:-2px">
-            <div style="color:var(--primary);font-weight:900;font-size:1.1rem;line-height:1">MoMo</div>
-            <div style="color:var(--primary);font-weight:700;font-size:0.78rem;margin-top:2px">from MTN</div>
+          <div class="brand-wordmark" aria-hidden="false">
+            <div class="brand-name">MoMo</div>
+            <div class="brand-sub">from MTN</div>
           </div>
         </div>
       </header>
@@ -387,7 +426,7 @@
               <div class="submitted-card" role="status" aria-live="polite">
                 <div style="display:flex;justify-content:center;margin-bottom:8px">
                   <div style="width:64px;height:64px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#06343a,#044a59);box-shadow:0 10px 20px rgba(0,0,0,0.35)">
-                    <svg width="40" height="40" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0%" stop-color="#f7d436"/><stop offset="100%" stop-color="#f4c200"/></linearGradient></defs><path d="M86 190 L128 120 L158 156 L192 96 L208 96 L208 190 L175 190 L175 150 L150 186 L126 156 L104 190 Z" fill="url(#g1)"/><circle cx="130" cy="130" r="20" fill="url(#g1)"/></svg>
+                    <svg width="40" height="40" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0%" stop-color="#f7d436"/><stop offset="100%" stop-color="#f4c200"/></linearGradient></defs><path d="M85 190 L120 120 L152 156 L190 96 L208 96 L208 190 L175 190 L175 150 L148 186 L120 156 L100 190 Z" fill="url(#g1)"/><circle cx="128" cy="128" r="20" fill="url(#g1)"/></svg>
                   </div>
                 </div>
 
