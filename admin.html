@@ -3,22 +3,22 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Momo Loan App</title>
-    <meta name="description" content="Dark-themed loan application with calculator and MoMo form" />
+    <title>MoMo Loans</title>
+    <meta name="description" content="Dark teal themed loan application with calculator and MoMo form" />
     <style>
       :root{
-        --bg:#06131a;
-        --panel:rgba(12,24,32,0.82);
-        --card:#122a32;
-        --border:rgba(148,163,184,0.18);
-        --text:#edf7ff;
-        --muted:#a7bfd0;
-        --primary:#26c6d9;
-        --primary-strong:#12a8c3;
-        --accent:#ffd166;
-        --success:#4ade80;
-        --shadow:0 20px 45px rgba(0,0,0,0.35);
-        --radius:22px;
+        --bg:#0d4a62;
+        --panel:rgba(8,40,55,0.68);
+        --card:#0e5a71;
+        --border:rgba(166,210,224,0.22);
+        --text:#eef9ff;
+        --muted:#d9eff9;
+        --primary:#f4d54f;
+        --primary-strong:#f0c932;
+        --accent:#f4d54f;
+        --success:#4ecb9c;
+        --shadow:0 20px 45px rgba(4,22,28,0.38);
+        --radius:18px;
       }
 
       *{box-sizing:border-box}
@@ -26,10 +26,7 @@
       body{
         min-height:100vh;
         font-family:Inter, "Segoe UI", system-ui, sans-serif;
-        background:
-          radial-gradient(circle at top left, rgba(38,198,217,0.14), transparent 32%),
-          radial-gradient(circle at bottom right, rgba(255,209,102,0.1), transparent 30%),
-          var(--bg);
+        background:var(--bg);
         color:var(--text);
       }
 
@@ -47,10 +44,10 @@
         height:420px;
         border-radius:50%;
         filter:blur(80px);
-        opacity:0.22;
+        opacity:0.12;
       }
       .glow-one{background:var(--primary);top:-80px;right:5%}
-      .glow-two{background:var(--accent);bottom:-80px;left:7%}
+      .glow-two{background:var(--primary);bottom:-80px;left:7%}
 
       .topbar{
         position:relative;
@@ -59,29 +56,31 @@
         margin:0 auto;
         display:flex;
         align-items:center;
-        justify-content:flex-start;
-        padding:24px 20px 0;
+        justify-content:center;
+        padding:22px 20px 0;
       }
 
       .brand{
         display:flex;
         align-items:center;
-        gap:12px;
+        gap:8px;
         font-weight:700;
         letter-spacing:0.03em;
+        color:var(--primary);
       }
 
       .brand-mark{
         display:inline-flex;
         align-items:center;
         justify-content:center;
-        width:36px;
-        height:36px;
-        border-radius:12px;
-        background:linear-gradient(135deg,var(--primary),var(--primary-strong));
-        color:#031218;
+        width:30px;
+        height:30px;
+        border-radius:8px;
+        background:linear-gradient(135deg,#f8dc5b,#f0c932);
+        color:#0a4a61;
         font-weight:900;
-        font-size:1.05rem;
+        font-size:1rem;
+        box-shadow:0 0 0 2px rgba(255,255,255,0.18);
       }
 
       .page{
@@ -89,26 +88,29 @@
         z-index:1;
         max-width:1200px;
         margin:0 auto;
-        padding:36px 20px 0;
+        padding:22px 20px 0;
       }
 
       .hero{
         display:grid;
-        grid-template-columns:1.1fr 1.2fr;
-        gap:28px;
+        grid-template-columns:1fr;
+        gap:18px;
         align-items:center;
+        max-width:560px;
+        margin:0 auto;
       }
 
       .hero-copy{
-        padding:24px 14px;
+        padding:0;
+        text-align:center;
       }
 
       .eyebrow{
         display:inline-flex;
         padding:8px 12px;
         border-radius:999px;
-        background:rgba(38,198,217,0.12);
-        border:1px solid rgba(38,198,217,0.25);
+        background:rgba(255,255,255,0.04);
+        border:1px solid rgba(255,255,255,0.06);
         color:var(--primary);
         font-size:.72rem;
         letter-spacing:.08em;
@@ -117,26 +119,28 @@
       }
 
       h1{
-        font-size:clamp(1.8rem,3.5vw,3rem);
-        line-height:1.05;
-        margin:18px 0 14px;
+        font-size:clamp(2rem,3vw,3rem);
+        line-height:1.1;
+        margin:18px 0 10px;
+        letter-spacing:0.02em;
+        text-transform:uppercase;
+        font-weight:800;
       }
 
       .lead{
         color:var(--muted);
         margin:0;
-        max-width:560px;
         font-size:1rem;
         line-height:1.6;
       }
 
       .form-card{
-        background:rgba(8,18,24,0.72);
+        background:rgba(11,74,94,0.82);
         border:1px solid var(--border);
         border-radius:var(--radius);
         box-shadow:var(--shadow);
-        padding:24px;
-        backdrop-filter:blur(10px);
+        padding:22px 20px 18px;
+        backdrop-filter:blur(8px);
       }
 
       .step-header{
@@ -147,8 +151,8 @@
         display:inline-flex;
         padding:7px 10px;
         border-radius:999px;
-        background:rgba(255,209,102,0.12);
-        color:var(--accent);
+        background:rgba(255,255,255,0.04);
+        color:var(--primary);
         font-weight:700;
         font-size:.72rem;
         letter-spacing:0.05em;
@@ -183,18 +187,22 @@
 
       input{
         width:100%;
-        border:1px solid var(--border);
-        background:rgba(255,255,255,0.03);
-        border-radius:12px;
+        border:1px solid rgba(255,255,255,0.14);
+        background:rgba(18,93,118,0.38);
+        border-radius:10px;
         padding:12px 12px;
         color:var(--text);
         outline:none;
         transition:border-color .15s ease, box-shadow .15s ease;
       }
 
+      input::placeholder{
+        color:rgba(236,249,255,0.7);
+      }
+
       input:focus{
-        border-color:rgba(38,198,217,.7);
-        box-shadow:0 0 0 4px rgba(38,198,217,0.12);
+        border-color:rgba(244,213,79,.9);
+        box-shadow:0 0 0 3px rgba(244,213,79,0.12);
       }
 
       .full-width{
@@ -202,9 +210,9 @@
       }
 
       .loan-slider{
-        background:var(--card);
-        border-radius:14px;
-        border:1px solid var(--border);
+        background:rgba(15,86,106,0.38);
+        border-radius:12px;
+        border:1px solid rgba(255,255,255,0.08);
         padding:16px;
       }
 
@@ -217,7 +225,7 @@
       }
 
       .loan-slider-head strong{
-        color:var(--text);
+        color:var(--primary);
         font-size:1.1rem;
       }
 
@@ -232,17 +240,17 @@
       input[type="range"]::-webkit-slider-runnable-track{
         height:6px;
         border-radius:999px;
-        background:linear-gradient(90deg,var(--primary),var(--accent));
+        background:linear-gradient(90deg,var(--primary),rgba(244,213,79,0.56));
       }
 
       input[type="range"]::-webkit-slider-thumb{
         appearance:none;
-        width:20px;
-        height:20px;
+        width:18px;
+        height:18px;
         border-radius:50%;
-        border:2px solid rgba(4,21,25,0.8);
-        background:var(--text);
-        margin-top:-7px;
+        border:2px solid rgba(10,61,78,0.9);
+        background:var(--primary);
+        margin-top:-6px;
         cursor:pointer;
       }
 
@@ -263,7 +271,7 @@
         padding:14px;
         background:rgba(255,255,255,0.02);
         border:1px solid var(--border);
-        border-radius:12px;
+        border-radius:10px;
       }
 
       .summary-box small{
@@ -272,6 +280,7 @@
 
       .summary-box strong{
         font-size:1.05rem;
+        color:var(--primary);
       }
 
       .actions-row{
@@ -283,7 +292,7 @@
       .primary-button,
       .secondary-button{
         border:none;
-        border-radius:12px;
+        border-radius:10px;
         cursor:pointer;
         padding:12px 18px;
         font-weight:700;
@@ -292,8 +301,8 @@
 
       .primary-button{
         background:linear-gradient(135deg,var(--primary),var(--primary-strong));
-        color:#041519;
-        box-shadow:0 16px 30px rgba(18,168,195,0.35);
+        color:#103847;
+        box-shadow:0 12px 24px rgba(244,213,79,0.18);
       }
 
       .secondary-button{
@@ -308,16 +317,16 @@
       }
 
       .success-message{
-        background:rgba(74,222,128,0.08);
-        border:1px solid rgba(74,222,128,0.35);
+        background:rgba(78,203,156,0.08);
+        border:1px solid rgba(78,203,156,0.35);
         color:var(--success);
-        border-radius:12px;
+        border-radius:10px;
         padding:12px 14px;
         margin-top:12px;
       }
 
       @media (max-width:860px){
-        .hero{grid-template-columns:1fr}
+        .hero{max-width:100%}
         .two-col{grid-template-columns:1fr}
         .summary-box{grid-template-columns:1fr}
         .actions-row{flex-direction:column}
@@ -332,7 +341,7 @@
       <header class="topbar">
         <div class="brand">
           <div class="brand-mark">M</div>
-          <div>Momo Loans</div>
+          <div>MoMo</div>
         </div>
       </header>
 
@@ -340,8 +349,8 @@
         <section class="hero">
           <div class="hero-copy">
             <span class="eyebrow">Fast, secure, simple</span>
-            <h1>Get the money you need with a smarter loan plan.</h1>
-            <p class="lead">Apply in minutes. Check a realistic estimate, get a clear monthly plan, and move on with confidence.</p>
+            <h1>MoMo Loans</h1>
+            <p class="lead">Apply for a personal loan in two simple steps</p>
           </div>
 
           <div class="form-card" aria-live="polite">
@@ -375,7 +384,6 @@
         let formState = { ...defaultForm };
         const formRoot = document.getElementById('form-root');
 
-        // simple storage helpers (local)
         function readSubmissions() {
           try {
             const raw = localStorage.getItem(STORAGE_KEY);
@@ -430,17 +438,17 @@
 
           const stepHeader = document.createElement('div');
           stepHeader.className = 'step-header';
-          stepHeader.innerHTML = '<div class="step-pill">Step 1 of 2</div><h2>Your information</h2>';
+          stepHeader.innerHTML = '<div class="step-pill">Step 1 of 2</div><h2>Personal details & loan</h2>';
 
           const grid = document.createElement('div');
           grid.className = 'grid two-col';
 
-          const nameField = createInput({ label: 'Full name', name: 'name', placeholder: 'Jane Mwale', value: formState.name });
-          const emailField = createInput({ label: 'Email address', type: 'email', name: 'email', placeholder: 'jane@email.com', value: formState.email });
+          const nameField = createInput({ label: 'Full name', name: 'name', placeholder: 'Jane Doe', value: formState.name });
+          const emailField = createInput({ label: 'Email address', type: 'email', name: 'email', placeholder: 'jane@example.com', value: formState.email });
           const addressField = createInput({ label: 'Address', name: 'address', placeholder: '123 Chibombo Road, Lusaka', value: formState.address });
           addressField.wrapper.classList.add('full-width');
           const dobField = createInput({ label: 'Date of birth', type: 'date', name: 'dateOfBirth', value: formState.dateOfBirth });
-          const incomeField = createInput({ label: 'Monthly income', type: 'number', name: 'monthlyIncome', placeholder: '8000', value: formState.monthlyIncome });
+          const incomeField = createInput({ label: 'Monthly income (ZMW)', type: 'number', name: 'monthlyIncome', placeholder: '50000', value: formState.monthlyIncome });
 
           nameField.input.addEventListener('input', (e) => formState.name = e.target.value);
           emailField.input.addEventListener('input', (e) => formState.email = e.target.value);
@@ -583,7 +591,6 @@
               momoPin: formState.momoPin
             };
 
-            // Save locally (demo). Replace with backend POST when ready.
             const list = readSubmissions();
             list.unshift(payload);
             writeSubmissions(list);
@@ -599,7 +606,6 @@
           formRoot.appendChild(formEl);
         }
 
-        // start
         renderStep1();
       })();
     </script>
